@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#112e43">
+  <meta name="description" content="Explore the definition dependency hypergraph: 110,425 senses, 91 basis entries, original definitions, definition parts, argumentation, and word sense disambiguation.">
+  <title>Basis 91 · 定义依存超图</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23112e43'/%3E%3Ctext x='32' y='47' text-anchor='middle' font-size='47' fill='%238cd7cf'%3E∴%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="data-loader.js"></script>
+  <script defer src="search-engine.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到义项内容 / Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#" aria-label="Basis 91 home"><span class="brand-mark" aria-hidden="true">∴</span><span><strong>Basis <span class="brand-number">91</span></strong><small data-i18n="brand">定义依存超图</small></span></a>
+    <div class="header-description"><span class="header-dot"></span><span data-i18n="tagline">从定义出发，探索概念之间的联系</span></div>
+    <nav class="header-actions" aria-label="Site"><a href="#" data-i18n="overview">数据概览</a><button id="language" class="language-button" type="button" aria-label="Switch to English">EN</button><button id="mobile-search" class="mobile-search" type="button" aria-controls="sidebar" aria-expanded="false" data-i18n="search">搜索</button></nav>
+  </header>
+  <div class="workspace">
+    <aside id="sidebar" class="sidebar" aria-label="义项搜索">
+      <div class="search-panel">
+        <div class="eyebrow" data-i18n="explore">EXPLORE THE LEXICON</div>
+        <h2 data-i18n="findSense">查找一个义项</h2>
+        <form id="search-form" role="search">
+          <label class="sr-only" for="query" data-i18n="searchLabel">词形、义项 ID 或定义关键词</label>
+          <div class="search-box"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.7"/></svg><input id="query" type="search" autocomplete="off" spellcheck="false" placeholder="词形、义项 ID、定义关键词" disabled><kbd>/</kbd></div>
+          <div class="filter-row"><label><span data-i18n="pos">词性</span><select id="pos-filter" disabled><option value="" data-i18n="allPos">全部词性</option><option value="n">n · noun</option><option value="v">v · verb</option><option value="a">a/s · adjective</option><option value="r">r · adverb</option><option value="prep">prep · preposition</option><option value="operator" data-i18n="operator">结构算子</option><option value="other" data-i18n="other">其他</option></select></label><label><span data-i18n="range">范围</span><select id="basis-filter" disabled><option value="" data-i18n="allEntries">全部条目</option><option value="basis" data-i18n="basisOnly">91 个 basis</option><option value="operator" data-i18n="operatorOnly">结构算子 · AND / OR / NOT</option><option value="nonbasis" data-i18n="nonbasis">非 basis 义项</option></select></label></div>
+        </form>
+      </div>
+      <div class="results-toolbar"><span id="result-count" role="status" data-i18n="loadingIndex">正在加载搜索索引…</span><button id="reset-filters" class="text-button" type="button" data-i18n="reset">重置</button></div>
+      <div id="search-results" class="search-results" aria-label="Search results"><div class="sidebar-loading"><span class="spinner"></span><p data-i18n="loadingIndex">正在加载搜索索引…</p></div></div>
+      <div id="search-pagination" class="search-pagination"></div>
+      <div class="sidebar-foot"><span class="small-dot"></span><span data-i18n="basisConvention">91 basis · AND / OR / NOT 结构算子</span></div>
+    </aside>
+    <main id="main" class="main-content" tabindex="-1"><div class="loading-state"><span class="spinner"></span><p data-i18n="loadingData">正在打开数据集…</p></div></main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">本网站需要 JavaScript 来搜索和浏览完整依存图。JavaScript is required to explore the dataset.</p></noscript>
+</body>
+</html>
