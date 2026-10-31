@@ -3,21 +3,161 @@
   const $ = selector => document.querySelector(selector);
   const main = $('#main');
   const escape = value => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  let lang = 'zh';
   const messages = {
-    brand:['定义依存超图','DEFINITION DEPENDENCY HYPERGRAPH'],tagline:['从定义出发，探索概念之间的联系','Explore the connections between concepts through definitions'],overview:['数据概览','Overview'],search:['搜索','Search'],explore:['EXPLORE THE LEXICON','EXPLORE THE LEXICON'],findSense:['查找一个义项','Find a sense'],searchLabel:['词形、义项 ID 或定义关键词','Lemma, sense ID, or definition keywords'],pos:['词性','Part of speech'],allPos:['全部词性','All POS'],range:['范围','Collection'],allEntries:['全部条目','All entries'],basisOnly:['91 个 basis','91 basis entries'],lexicalOnly:['其他 basis','Other basis entries'],operatorOnly:['结构算子 · AND / OR / NOT','Structural operators · AND / OR / NOT'],nonbasis:['非 basis 义项','Non-basis senses'],operator:['结构算子','Structural operator'],other:['其他','Other'],loadingIndex:['正在加载搜索索引…','Loading the search index…'],loadingData:['正在打开数据集…','Opening the dataset…'],reset:['重置','Reset'],basisConvention:['91 basis · AND / OR / NOT 结构算子','91 basis · AND / OR / NOT operators'],allCount:['个条目','entries'],results:['条结果','results'],prev:['上一页','Previous'],next:['下一页','Next'],page:['页','page'],noResults:['未找到匹配的义项','No matching senses'],trySearch:['尝试更短的词形、完整义项 ID，或调整筛选条件。','Try a shorter lemma, a complete sense ID, or different filters.'],indexError:['搜索索引加载失败','Search index could not be loaded'],retry:['重试','Retry'],heroTitle:['定义连接概念。<br>探索它们的依存结构。','Definitions connect concepts.<br>Explore their dependencies.'],heroText:['查看完整义项定义、定义分支、论元化语境和词义消歧结果。沿着双向依赖关系，了解一个概念如何由其他概念解释，以及它被哪些定义复用。','Read definitions, alternative definition parts, argumentation, and word sense disambiguation. Follow dependencies in both directions to see how a concept is explained and reused.'],browseBasis:['浏览 91 个 basis','Explore the 91 basis entries'],tryEvent:['从 event 开始','Start with event'],senses:['语义节点','sense nodes'],rules:['依赖 clauses','dependency clauses'],basisEntries:['basis','basis entries'],collectionEntries:['可浏览条目','browsable entries'],examples:['从这些条目开始','A few places to start'],examplesCaption:['每个词形都对应明确的义项','Each entry identifies a specific sense'],basisExplanation:['本网站统一采用 <strong>91 basis</strong> 口径，并将 <strong>AND</strong>、<strong>OR</strong>、<strong>NOT</strong> 归为结构算子。可在目录中查看它们的作用与对应记录。','This website uses the <strong>91-basis</strong> convention and classifies <strong>AND</strong>, <strong>OR</strong> and <strong>NOT</strong> as structural operators. Explore their roles and records in the catalog.'],howTitle:['如何阅读这张超图','Reading the hypergraph'],how1:['找到具体义项','Find the intended sense'],how1Text:['同一个词可能有多个含义。结合词性、释义与义项 ID，选择需要查看的概念。','A word can have several senses. Use the part of speech, definition, and sense ID to identify the intended meaning.'],how2:['阅读完整定义分支','Read complete alternatives'],how2Text:['每条 clause 的前提以 AND 共同满足；同一义项的多条 clauses 以 OR 提供不同解释路径。','Premises within a clause are required together (AND). Separate clauses provide alternative routes (OR) to the same head sense.'],how3:['沿两个方向探索','Explore both directions'],how3Text:['“它依赖的”展示该义项的解释前提；“依赖它的”展示在定义中引用该义项的其他节点。','“Depends on” shows premises used to explain the sense. “Used by” shows other senses whose definitions reference it.'],dataSource:['数据说明与来源','Data and sources'],sourceText:['定义与编译记录保留各自来源标签。部分历史来源没有记录 argumentation；这些位置会明确标注。不同来源的许可与引用要求分别适用。','Definitions and compilation records retain their source labels. Missing argumentation in historical records is identified explicitly. Licensing and attribution requirements apply separately to each source.'],graphFingerprint:['图版本 SHA-256','Graph SHA-256'],definition:['定义','Definition'],synonyms:['同义词形','Lemmas'],copyLink:['复制链接','Copy link'],download:['打开 / 复制 JSON','Open / copy JSON'],copied:['已复制义项链接','Sense link copied'],copyFailed:['无法自动复制，请复制浏览器地址栏。','Copy the URL from your browser address bar.'],compilation:['定义与解析','Definitions & analysis'],dependsOn:['它依赖的','Depends on'],usedBy:['依赖它的','Used by'],clauses:['clauses','clauses'],uniqueDeps:['不重复依赖','distinct dependencies'],referencingSenses:['引用它的义项','referencing senses'],sourceDefinitions:['来源定义与编译过程','Source definitions & compilation'],compileIntro:['每个 definition part 表示一个完整的可选定义分支。展开其原子片段，可查看 argumentation 与逐词 WSD；片段与完整分支分别呈现。','Each definition part is a complete alternative branch. Expand its fragments to inspect argumentation and token-level WSD. Fragments and complete alternatives are shown separately.'],sourceMissing:['来源记录没有提供该义项的 definition part、argumentation 或 WSD。图中已有的依赖 clauses 仍可在“它依赖的”查看。','The source records do not provide definition parts, argumentation, or WSD for this sense. Its graph clauses remain available under “Depends on”.'],argumentationMissing:['该片段的来源未提供 argumentation。','The source does not provide argumentation for this fragment.'],wsdMissing:['该片段的来源未提供 WSD 记录。','The source does not provide WSD records for this fragment.'],part:['Definition part','Definition part'],alternative:['完整可选分支','complete alternative'],fragment:['原子片段','Fragment'],fragments:['原子片段','fragments'],evidence:['查看 argumentation 与 WSD','View argumentation & WSD'],partDependencies:['该分支的完整依赖集合 · AND','Complete premises of this part · AND'],mappedClauses:['对应图规则','Mapped graph clauses'],noMapping:['未记录对应图规则','No graph clause mapping recorded'],activeLogic:['当前活跃分支的逻辑结构','Logic of active definition parts'],sourceLogic:['来源记录的逻辑结构','Logic recorded in the source'],scopeLogic:['此处显示来源保存的完整逻辑；当前网站只展示仍活跃的定义分支。','This is the full logic retained by the source; the website presents only active definition parts.'],args:['论元与绑定','Arguments & bindings'],targetSentence:['A · 目标语境','A · Target context'],definitionSentence:['B · 定义语境','B · Definition context'],rawArgumentation:['argumentation 公开字段记录','Argumentation published fields'],wsdHeading:['词义消歧 · WSD','Word sense disambiguation · WSD'],token:['词 / token','Token'],selectedSense:['所选义项','Selected sense'],projection:['投影状态','Projection'],rationale:['判断依据','Rationale'],projected:['计入该分支依赖','Included in this part’s premises'],scopeOnly:['语境 / 未计入此分支','Context / not a premise of this part'],scopeLabel:['未投影为此分支依赖','Not projected to this part'],notSelected:['未选择义项','No sense selected'],rawWsd:['WSD 公开字段记录','WSD published fields'],rawRecord:['查看完整条目 JSON','View complete entry JSON'],notes:['记录说明','Record notes'],depsIntro:['以下每张卡片是一条完整的依赖 clause。卡片内部的义项以 AND 共同构成前提，多张卡片以 OR 提供可选路径。点击任一义项可继续探索。','Each card is one complete dependency clause. The premises within it are required together (AND); separate cards are alternatives (OR). Select a sense to explore it.'],relationCaution:['单个依赖关系表示该义项出现在一个分支的前提中。完成该分支仍需满足其余所有前提。','A dependency means that a sense appears among a branch’s premises. The rest of that branch’s premises are also required.'],clause:['Clause','Clause'],premises:['个共同前提','joint premises'],noClauses:['没有词汇依赖 clauses','No lexical dependency clauses'],noDepsText:['该记录未包含需要展示的词汇依赖规则。','This record does not contain lexical dependency clauses.'],usedIntro:['这些义项至少有一个定义分支引用当前义项。展开“查看 clause”可检查该分支的其他共同前提。','At least one branch of each sense below uses the current sense. Expand “Show clause” to inspect the other premises required by that branch.'],filterDependents:['在引用它的义项中搜索…','Search within referencing senses…'],showClause:['查看 clause','Show clause'],hideClause:['收起 clause','Hide clause'],noDependents:['没有义项直接引用它','No directly referencing senses'],noDependentsText:['当前词汇规则中没有以该义项为前提的 clause。','No lexical clause in the current graph uses this sense as a premise.'],noDependentMatches:['没有符合筛选条件的引用义项','No referencing senses match this filter'],loadMore:['显示更多','Show more'],loading:['正在加载…','Loading…'],recordError:['暂时无法打开此义项','Could not open this sense'],recordErrorText:['数据请求未完成或此 ID 不在当前快照中。请重试，或从搜索结果重新选择。','The request did not complete, or this ID is absent from the snapshot. Retry or choose an entry from search results.'],operatorNA:['此条目用于说明 clause 的结构，没有单独的 argumentation 或 WSD 编译记录。','This entry explains clause structure and has no separate argumentation or WSD compilation record.'],operatorNote:['AND 表示合取，OR 表示选择，NOT 表示否定。三者均归入结构算子。','AND expresses conjunction, OR expresses alternatives, and NOT expresses negation. All three are classified as structural operators.'],operatorAnd:['AND 表示同一 clause 中的所有前提需要共同满足。','AND requires all premises within one clause to be available together.'],operatorOr:['OR 表示同一 head 的任一完整 clause 都可提供一条构造路径。','OR allows any complete clause for a head to provide a construction route.'],operatorNot:['NOT 表示否定。下方保留 not / non 义项的原始定义、编译记录和依赖关系。','NOT expresses negation. The original definition, compilation records and dependency relations of the not / non sense are retained below.'],operatorUsage:['结构上的使用','Structural usage'],operatorUsedText:['该算子的作用体现在所有适用的 clause 结构中。“依赖它的”列表仅统计词汇规则中的显式引用，因此此列表不会枚举整个图。','This operator acts through clause structure. The “Used by” list counts explicit references in lexical rules and does not enumerate the whole graph for structural operators.'],missingArgSummary:['部分来源缺少 argumentation；具体缺失位置已标注。','Some source records lack argumentation; missing fields are identified below.'],sourceKinds:{},entry:['义项','Sense'],back:['返回概览','Back to overview'],openSearch:['打开搜索','Open search'],noData:['暂无数据','No data']
+    "brand": "DEFINITION DEPENDENCY HYPERGRAPH",
+    "tagline": "Explore the connections between concepts through definitions",
+    "overview": "Overview",
+    "search": "Search",
+    "explore": "EXPLORE THE LEXICON",
+    "findSense": "Find a sense",
+    "searchLabel": "Lemma, sense ID, or definition keywords",
+    "pos": "Part of speech",
+    "allPos": "All POS",
+    "range": "Collection",
+    "allEntries": "All entries",
+    "basisOnly": "91 basis entries",
+    "lexicalOnly": "Other basis entries",
+    "operatorOnly": "Structural operators · AND / OR / NOT",
+    "nonbasis": "Non-basis senses",
+    "operator": "Structural operator",
+    "other": "Other",
+    "loadingIndex": "Loading the search index…",
+    "loadingData": "Opening the dataset…",
+    "reset": "Reset",
+    "basisConvention": "91 basis · AND / OR / NOT operators",
+    "allCount": "entries",
+    "results": "results",
+    "prev": "Previous",
+    "next": "Next",
+    "page": "page",
+    "noResults": "No matching senses",
+    "trySearch": "Try a shorter lemma, a complete sense ID, or different filters.",
+    "indexError": "Search index could not be loaded",
+    "retry": "Retry",
+    "heroTitle": "Definitions connect concepts.<br>Explore their dependencies.",
+    "heroText": "Read definitions, alternative definition parts, argumentation, and word sense disambiguation. Follow dependencies in both directions to see how a concept is explained and reused.",
+    "browseBasis": "Explore the 91 basis entries",
+    "tryEvent": "Start with event",
+    "senses": "sense nodes",
+    "rules": "dependency clauses",
+    "basisEntries": "basis entries",
+    "collectionEntries": "browsable entries",
+    "examples": "A few places to start",
+    "examplesCaption": "Each entry identifies a specific sense",
+    "basisExplanation": "This website uses the <strong>91-basis</strong> convention and classifies <strong>AND</strong>, <strong>OR</strong> and <strong>NOT</strong> as structural operators. Explore their roles and records in the catalog.",
+    "howTitle": "Reading the hypergraph",
+    "how1": "Find the intended sense",
+    "how1Text": "A word can have several senses. Use the part of speech, definition, and sense ID to identify the intended meaning.",
+    "how2": "Read complete alternatives",
+    "how2Text": "Premises within a clause are required together (AND). Separate clauses provide alternative routes (OR) to the same head sense.",
+    "how3": "Explore both directions",
+    "how3Text": "“Depends on” shows premises used to explain the sense. “Used by” shows other senses whose definitions reference it.",
+    "dataSource": "Data and sources",
+    "sourceText": "Definitions and compilation records retain their source labels. Missing argumentation in historical records is identified explicitly. Licensing and attribution requirements apply separately to each source.",
+    "graphFingerprint": "Graph SHA-256",
+    "definition": "Definition",
+    "synonyms": "Lemmas",
+    "copyLink": "Copy link",
+    "download": "Open / copy JSON",
+    "copied": "Sense link copied",
+    "copyFailed": "Copy the URL from your browser address bar.",
+    "compilation": "Definitions & analysis",
+    "dependsOn": "Depends on",
+    "usedBy": "Used by",
+    "clauses": "clauses",
+    "uniqueDeps": "distinct dependencies",
+    "referencingSenses": "referencing senses",
+    "sourceDefinitions": "Source definitions & compilation",
+    "compileIntro": "Each definition part is a complete alternative branch. Expand its fragments to inspect argumentation and token-level WSD. Fragments and complete alternatives are shown separately.",
+    "sourceMissing": "The source records do not provide definition parts, argumentation, or WSD for this sense. Its graph clauses remain available under “Depends on”.",
+    "argumentationMissing": "The source does not provide argumentation for this fragment.",
+    "wsdMissing": "The source does not provide WSD records for this fragment.",
+    "part": "Definition part",
+    "alternative": "complete alternative",
+    "fragment": "Fragment",
+    "fragments": "fragments",
+    "evidence": "View argumentation & WSD",
+    "partDependencies": "Complete premises of this part · AND",
+    "mappedClauses": "Mapped graph clauses",
+    "noMapping": "No graph clause mapping recorded",
+    "activeLogic": "Logic of active definition parts",
+    "sourceLogic": "Logic recorded in the source",
+    "scopeLogic": "This is the full logic retained by the source; the website presents only active definition parts.",
+    "args": "Arguments & bindings",
+    "targetSentence": "A · Target context",
+    "definitionSentence": "B · Definition context",
+    "rawArgumentation": "Argumentation JSON (English view)",
+    "wsdHeading": "Word sense disambiguation · WSD",
+    "token": "Token",
+    "selectedSense": "Selected sense",
+    "projection": "Projection",
+    "rationale": "Rationale",
+    "projected": "Included in this part’s premises",
+    "scopeOnly": "Context / not a premise of this part",
+    "scopeLabel": "Not projected to this part",
+    "notSelected": "No sense selected",
+    "rawWsd": "WSD JSON (English view)",
+    "rawRecord": "View entry JSON (English view)",
+    "notes": "Record notes",
+    "depsIntro": "Each card is one complete dependency clause. The premises within it are required together (AND); separate cards are alternatives (OR). Select a sense to explore it.",
+    "relationCaution": "A dependency means that a sense appears among a branch’s premises. The rest of that branch’s premises are also required.",
+    "clause": "Clause",
+    "premises": "joint premises",
+    "noClauses": "No lexical dependency clauses",
+    "noDepsText": "This record does not contain lexical dependency clauses.",
+    "usedIntro": "At least one branch of each sense below uses the current sense. Expand “Show clause” to inspect the other premises required by that branch.",
+    "filterDependents": "Search within referencing senses…",
+    "showClause": "Show clause",
+    "hideClause": "Hide clause",
+    "noDependents": "No directly referencing senses",
+    "noDependentsText": "No lexical clause in the current graph uses this sense as a premise.",
+    "noDependentMatches": "No referencing senses match this filter",
+    "loadMore": "Show more",
+    "loading": "Loading…",
+    "recordError": "Could not open this sense",
+    "recordErrorText": "The request did not complete, or this ID is absent from the snapshot. Retry or choose an entry from search results.",
+    "operatorNA": "This entry explains clause structure and has no separate argumentation or WSD compilation record.",
+    "operatorNote": "AND expresses conjunction, OR expresses alternatives, and NOT expresses negation. All three are classified as structural operators.",
+    "operatorAnd": "AND requires all premises within one clause to be available together.",
+    "operatorOr": "OR allows any complete clause for a head to provide a construction route.",
+    "operatorNot": "NOT expresses negation. The original definition, compilation records and dependency relations of the not / non sense are retained below.",
+    "operatorUsage": "Structural usage",
+    "operatorUsedText": "This operator acts through clause structure. The “Used by” list counts explicit references in lexical rules and does not enumerate the whole graph for structural operators.",
+    "missingArgSummary": "Some source records lack argumentation; missing fields are identified below.",
+    "entry": "Sense",
+    "back": "Back to overview",
+    "openSearch": "Open search",
+    "noData": "No data"
   };
-  const t = key => { const value = messages[key]; return Array.isArray(value) ? value[lang === 'en' ? 1 : 0] : key; };
-  const fmt = number => Number(number || 0).toLocaleString(lang === 'en' ? 'en-US' : 'zh-CN');
+  const t = key => messages[key] ?? key;
+  const containsChinese = value => /[\u3400-\u9fff]/u.test(String(value ?? ''));
+  function englishRationale(value) {
+    return containsChinese(value) ? 'The source rationale is not available in English.' : value;
+  }
+  function englishDisplayJSON(value) {
+    function project(item) {
+      if (Array.isArray(item)) return item.map(project);
+      if (!item || typeof item !== 'object') return item;
+      return Object.fromEntries(Object.entries(item)
+        .filter(([key]) => key !== 'binding_notes_zh')
+        .map(([key, child]) => [key, key === 'rationale' && typeof child === 'string' ? englishRationale(child) : project(child)]));
+    }
+    return JSON.stringify({
+      ...project(value),
+      _display: {
+        language: 'en',
+        annotationPolicy: 'Non-English source annotations are omitted or marked unavailable. The original dataset is unchanged.'
+      }
+    }, null, 2);
+  }
+  const fmt = number => Number(number || 0).toLocaleString('en-US');
   const icons = { copy:'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M15 8V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h4"/></svg>',download:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg>' };
   const state = { manifest:null, searchEngine:null, ready:false, metadata:new Map(), current:null, tab:'compilation', searchPage:0, searchResult:null, searchEpoch:0, routeEpoch:0, dependentEpoch:0, dependentPage:0, dependentQuery:'', requestId:0, pending:new Map(), shardCache:new Map(), shardPromises:new Map() };
   let searchTimer, dependentTimer, toastTimer;
-  function applyLanguage() {
-    document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
-    document.title = lang === 'en' ? 'Basis 91 · Definition Dependency Hypergraph' : 'Basis 91 · 定义依存超图';
+  function applyInterfaceText() {
+    document.documentElement.lang = 'en';
+    document.title = 'Basis 91 · Definition Dependency Hypergraph';
     document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
-    $('#language').textContent = lang === 'en' ? '中文' : 'EN';
-    $('#language').setAttribute('aria-label', lang === 'en' ? '切换到中文' : 'Switch to English');
     $('#query').placeholder = t('searchLabel');
   }
   function toast(message) { clearTimeout(toastTimer); $('#toast').textContent = message; $('#toast').classList.add('visible'); toastTimer = setTimeout(() => $('#toast').classList.remove('visible'), 2600); }
@@ -105,7 +245,7 @@
     await getMetadata(ids); if(epoch!==state.routeEpoch || state.current)return;
     main.innerHTML=`<div class="breadcrumb"><span>DATA EXPLORER</span><span>/</span><span>${t('overview')}</span></div><section class="overview-hero"><div class="section-overline">BASIS 91 · OPEN EXPLORER</div><h1>${t('heroTitle')}</h1><p>${t('heroText')}</p><div class="hero-actions"><button class="primary-button" data-action="browse-basis">${t('browseBasis')} <span aria-hidden="true">→</span></button><a class="secondary-button" href="#oewn-00029677-n">${t('tryEvent')}</a></div></section><div class="metrics"><div class="metric"><strong>${fmt(manifest.senseCount)}</strong><span>${t('senses')}</span></div><div class="metric"><strong>${fmt(manifest.ruleCount)}</strong><span>${t('rules')}</span></div><div class="metric accent"><strong>91</strong><span>${t('basisEntries')}</span></div><div class="metric"><strong>${fmt(manifest.entryCount)}</strong><span>${t('collectionEntries')}</span></div></div><div class="section-heading"><h2>${t('examples')}</h2><small>${t('examplesCaption')}</small></div><div class="example-grid">${ids.map(id=>{const item=state.metadata.get(id);return item?`<a href="${href(id)}" class="example-card"><div class="badges">${badge(item)}</div><h3>${escape(titleOf(item))}</h3><p>${escape(item.definition)}</p><code>${escape(id)}</code><span class="example-arrow">↗</span></a>`:'';}).join('')}</div><div class="basis-note"><span class="note-icon" aria-hidden="true">∴</span><p>${t('basisExplanation')}</p></div><div class="section-heading"><h2>${t('howTitle')}</h2></div><div class="how-grid">${[1,2,3].map(i=>`<div class="how-step"><span class="step-number">0${i}</span><h3>${t(`how${i}`)}</h3><p>${t(`how${i}Text`)}</p></div>`).join('')}</div>${dataFooter()}`;
   }
-  function dataFooter() { return `<footer class="dataset-footer"><strong>${t('dataSource')}</strong><p>${t('sourceText')}</p><p><a href="https://en-word.net/" target="_blank" rel="noopener noreferrer">Open English WordNet</a> · <a href="https://en.wiktionary.org/" target="_blank" rel="noopener noreferrer">Wiktionary</a> · <a href="data/manifest.json" target="_blank" rel="noopener noreferrer">${lang==='en'?'Version manifest':'版本清单'}</a></p><span>${t('graphFingerprint')}: <code>${escape(state.manifest.graphSha256)}</code></span></footer>`; }
+  function dataFooter() { return `<footer class="dataset-footer"><strong>${t('dataSource')}</strong><p>${t('sourceText')}</p><p><a href="https://en-word.net/" target="_blank" rel="noopener noreferrer">Open English WordNet</a> · <a href="https://en.wiktionary.org/" target="_blank" rel="noopener noreferrer">Wiktionary</a> · <a href="data/manifest.json" target="_blank" rel="noopener noreferrer">Version manifest</a></p><span>${t('graphFingerprint')}: <code>${escape(state.manifest.graphSha256)}</code></span></footer>`; }
   function renderDetail() {
     const record=state.current; if(!record)return;
     const operator=record.basisKind==='operator';
@@ -114,13 +254,13 @@
     selectTab(state.tab);
   }
   function sourceName(doc) {
-    const names={reviewed_definition_revision:['审查后的定义修订','Reviewed definition revision'],source_definition:['来源定义','Source definition'],source_archive:['来源编译记录','Source compilation record'],structural_operator:['结构算子','Structural operator']};
-    return names[doc.sourceKind]?.[lang==='en'?1:0] || doc.label || doc.sourceKind || t('definition');
+    const names={reviewed_definition_revision:'Reviewed definition revision',source_definition:'Source definition',source_archive:'Source compilation record',structural_operator:'Structural operator'};
+    return names[doc.sourceKind] || doc.label || doc.sourceKind || t('definition');
   }
   function renderCompilation(record) {
     if(structuralOnly(record))return `<div class="section-heading"><h2>${t('operatorUsage')}</h2></div><div class="operator-explainer"><p>${t('operatorNA')}</p><p>${t('operatorUsedText')}</p></div>${recordNotes(record)}${fullRecord(record)}`;
     const docs=record.documents||[];
-    return `<div class="section-heading"><h2>${t('sourceDefinitions')}</h2><small>${fmt(docs.length)} ${lang==='en'?'source records':'份来源记录'}</small></div><p class="panel-description">${t('compileIntro')}</p>${!docs.length?`<div class="missing">${t('sourceMissing')}</div>`:docs.map((doc,index)=>`<details class="document" data-document="${index}"><summary><div class="document-title"><strong>${escape(sourceName(doc))}</strong><span>${fmt(doc.definitionParts?.length)} definition parts · ${fmt(doc.fragments?.length)} ${t('fragments')}</span></div><span class="badge">${String(index+1).padStart(2,'0')}</span></summary><div class="document-content"></div></details>`).join('')}${recordNotes(record)}${fullRecord(record)}`;
+    return `<div class="section-heading"><h2>${t('sourceDefinitions')}</h2><small>${fmt(docs.length)} source records</small></div><p class="panel-description">${t('compileIntro')}</p>${!docs.length?`<div class="missing">${t('sourceMissing')}</div>`:docs.map((doc,index)=>`<details class="document" data-document="${index}"><summary><div class="document-title"><strong>${escape(sourceName(doc))}</strong><span>${fmt(doc.definitionParts?.length)} definition parts · ${fmt(doc.fragments?.length)} ${t('fragments')}</span></div><span class="badge">${String(index+1).padStart(2,'0')}</span></summary><div class="document-content"></div></details>`).join('')}${recordNotes(record)}${fullRecord(record)}`;
   }
   function recordNotes(record) { return record.notes?.length?`<details class="full-json"><summary>${t('notes')}</summary>${record.notes.map(note=>`<p class="record-note">${escape(note)}</p>`).join('')}</details>`:''; }
   function fullRecord(record) { return `<details class="full-json" data-raw-record><summary>${t('rawRecord')}</summary><div></div></details>`; }
@@ -129,7 +269,7 @@
     const index=Number(element.dataset.document),doc=state.current?.documents?.[index];if(!doc)return;
     element.dataset.hydrated='true';
     const parts=doc.definitionParts||[];
-    element.querySelector('.document-content').innerHTML=`<div class="source-definition">${escape(doc.definition)}</div>${doc.logicScope?`<p class="subtle-note">${lang==='en'?'The source definition is quoted in full. The definition parts and logic below retain only the branches active in this graph.':'来源定义保留完整文字。下方 definition parts 与逻辑结构仅呈现当前图中活跃的分支。'}</p>`:''}${(doc.activeLogic||doc.logic)?`<details class="logic-details"><summary>${t('activeLogic')}</summary><pre class="raw-json">${escape(JSON.stringify(doc.activeLogic||doc.logic,null,2))}</pre></details>`:''}${parts.slice(0,limit).map((part,partIndex)=>renderPart(doc,part,index,partIndex)).join('')}${parts.length>limit?`<button class="show-more" data-document-more="${index}" data-limit="${limit+8}">${t('loadMore')} · ${fmt(parts.length-limit)}</button>`:''}<div class="source-metadata">${escape(doc.label)}${doc.sourceKind?` · ${escape(doc.sourceKind)}`:''}</div>`;
+    element.querySelector('.document-content').innerHTML=`<div class="source-definition">${escape(doc.definition)}</div>${doc.logicScope?`<p class="subtle-note">The source definition is quoted in full. The definition parts and logic below retain only the branches active in this graph.</p>`:''}${(doc.activeLogic||doc.logic)?`<details class="logic-details"><summary>${t('activeLogic')}</summary><pre class="raw-json">${escape(JSON.stringify(doc.activeLogic||doc.logic,null,2))}</pre></details>`:''}${parts.slice(0,limit).map((part,partIndex)=>renderPart(doc,part,index,partIndex)).join('')}${parts.length>limit?`<button class="show-more" data-document-more="${index}" data-limit="${limit+8}">${t('loadMore')} · ${fmt(parts.length-limit)}</button>`:''}<div class="source-metadata">${escape(doc.label)}${doc.sourceKind?` · ${escape(doc.sourceKind)}`:''}</div>`;
   }
   function renderPart(doc,part,docIndex,partIndex) {
     const fragMap=new Map((doc.fragments||[]).map(f=>[f.id,f])); const fragments=(part.fragmentIds||[]).map(id=>fragMap.get(id)).filter(Boolean);
@@ -150,7 +290,7 @@
     const a=argumentation.instantiated_phrase||argumentation.instantiated?.instantiated_phrase||argumentation.argumented_phrase||argumentation.phrase||'';
     const b=argumentation.instantiated_definition||argumentation.instantiated?.instantiated_definition||argumentation.argumented_definition||argumentation.definition||'';
     const args=argumentation.instantiated_args||argumentation.template_args||argumentation.context_placeholder_values||{};
-    return `${a||b?`<div class="argumentation-pair">${a?`<div class="sentence-row"><span class="sentence-label">A</span><span class="sentence-text">${escape(a)}</span></div>`:''}${b?`<div class="sentence-row"><span class="sentence-label">B</span><span class="sentence-text">${escape(b)}</span></div>`:''}</div>`:''}${Object.keys(args).length?`<div class="field-label">${t('args')}</div><div class="args">${Object.entries(args).map(([key,value])=>`<span class="arg"><code>${escape(key)}</code> ${escape(typeof value==='string'?value:JSON.stringify(value))}</span>`).join('')}</div>`:''}<details class="full-json"><summary>${t('rawArgumentation')}</summary><pre class="raw-json">${escape(JSON.stringify(argumentation,null,2))}</pre></details>`;
+    return `${a||b?`<div class="argumentation-pair">${a?`<div class="sentence-row"><span class="sentence-label">A</span><span class="sentence-text">${escape(a)}</span></div>`:''}${b?`<div class="sentence-row"><span class="sentence-label">B</span><span class="sentence-text">${escape(b)}</span></div>`:''}</div>`:''}${Object.keys(args).length?`<div class="field-label">${t('args')}</div><div class="args">${Object.entries(args).map(([key,value])=>`<span class="arg"><code>${escape(key)}</code> ${escape(typeof value==='string'?value:JSON.stringify(value))}</span>`).join('')}</div>`:''}<details class="full-json"><summary>${t('rawArgumentation')}</summary><pre class="raw-json">${escape(englishDisplayJSON(argumentation))}</pre></details>`;
   }
   function tokenIds(token) {
     const ids=token.canonical_synset_id||token.canonical_synset_ids||token.selected_synset_ids||token.selected_sense_ids||token.sense_ids||token.selected_synset_id||token.selected_sense_id||token.synset_id||token.sense_id;
@@ -163,10 +303,10 @@
       const ids=tokenIds(token),outside=token.in_definition_scope===false;
       const status=String(token.projection_status||'');
       const projected=ids.length>0&&token.requires_definition_wsd===true&&token.in_graph===true&&ids.every(id=>dependencies.has(id));
-      const scopeWarning=projected&&outside?`<span class="scope-label">${lang==='en'?'Source scope flag conflicts with the projected rule':'源记录 scope 标志冲突'}</span>`:'';
-      const tokenChips=ids.map(id=>token.in_graph===false||!state.metadata.has(id)?`<span class="sense-chip mono" title="${lang==='en'?'Not a node in the current graph':'不属于当前图的节点'}">${escape(id)}</span>`:chip(id)).join('');
-      return `<tr><td class="wsd-token">${escape(token.text||token.token||token.lemma||'—')}<small>${escape(token.spacy_pos||token.pos||token.wsd_role||'')}</small></td><td>${ids.length?`<div class="chip-row">${tokenChips}</div>${!projected?`<span class="scope-label">${t('scopeLabel')}</span>`:''}${scopeWarning}`:`<span class="subtle-note">${t('notSelected')}</span>`}</td><td class="wsd-status ${projected?'projected':ids.length?'scope':''}">${projected?t('projected'):ids.length?t('scopeOnly'):escape(token.decision||token.projection_status||'—')}<small class="subtle-note">${token.projection_status?`<br>${escape(token.projection_status)}`:''}</small></td><td class="wsd-rationale">${token.rationale?`<details><summary>${t('rationale')}</summary><p>${escape(token.rationale)}</p></details>`:'—'}</td></tr>`;
-    }).join('')}</tbody></table></div>`:''}<details class="full-json"><summary>${t('rawWsd')}</summary><pre class="raw-json">${escape(JSON.stringify(wsd,null,2))}</pre></details>`;
+      const scopeWarning=projected&&outside?`<span class="scope-label">Source scope flag conflicts with the projected rule</span>`:'';
+      const tokenChips=ids.map(id=>token.in_graph===false||!state.metadata.has(id)?`<span class="sense-chip mono" title="Not a node in the current graph">${escape(id)}</span>`:chip(id)).join('');
+      return `<tr><td class="wsd-token">${escape(token.text||token.token||token.lemma||'—')}<small>${escape(token.spacy_pos||token.pos||token.wsd_role||'')}</small></td><td>${ids.length?`<div class="chip-row">${tokenChips}</div>${!projected?`<span class="scope-label">${t('scopeLabel')}</span>`:''}${scopeWarning}`:`<span class="subtle-note">${t('notSelected')}</span>`}</td><td class="wsd-status ${projected?'projected':ids.length?'scope':''}">${projected?t('projected'):ids.length?t('scopeOnly'):escape(token.decision||token.projection_status||'—')}<small class="subtle-note">${token.projection_status?`<br>${escape(token.projection_status)}`:''}</small></td><td class="wsd-rationale">${token.rationale?`<details><summary>${t('rationale')}</summary><p>${escape(englishRationale(token.rationale))}</p></details>`:'—'}</td></tr>`;
+    }).join('')}</tbody></table></div>`:''}<details class="full-json"><summary>${t('rawWsd')}</summary><pre class="raw-json">${escape(englishDisplayJSON(wsd))}</pre></details>`;
   }
   function renderClause(clause,index,head,current='') {
     return `<div class="clause-card"><div class="clause-top"><strong>${t('clause')} ${index+1}</strong><span>${fmt(clause.length)} ${t('premises')}</span></div><div class="clause-expression"><div class="chip-row">${chips(clause,current,true)||'∅'}</div><span class="clause-arrow" aria-label="supports">→</span><div class="clause-head">${chip(head,current,false)}</div></div></div>`;
@@ -215,18 +355,17 @@
     if(!state.current)return;
     const active=document.activeElement,dialog=document.createElement('dialog');
     dialog.className='json-dialog';
-    const en=lang==='en';
-    dialog.innerHTML=`<div class="json-dialog-header"><h2>${escape(state.current.id)} · JSON</h2><button type="button" class="secondary-button" data-json-close>${en?'Close':'关闭'}</button></div><p>${en?'This hosting environment may restrict direct downloads and clipboard access. View the complete JSON below, or select the text and use your browser’s Copy command.':'当前托管环境可能限制直接下载和自动复制。可以在下方查看完整 JSON，或选中文本后使用浏览器的复制功能。'}</p><div class="json-dialog-actions"><button type="button" class="secondary-button" data-json-select>${en?'Select all':'全选文本'}</button><button type="button" class="secondary-button" data-json-copy>${en?'Copy JSON':'复制 JSON'}</button><span role="status" data-json-status></span></div><textarea class="json-text" readonly spellcheck="false" wrap="off" aria-label="Complete sense JSON"></textarea>`;
-    const area=dialog.querySelector('textarea');area.value=JSON.stringify(state.current,null,2);
-    const select=()=>{area.focus();area.select();dialog.querySelector('[data-json-status]').textContent=en?'Text selected. Use Copy or Ctrl/Cmd+C.':'已选中，请使用复制或 Ctrl/Cmd+C。';};
+    dialog.innerHTML=`<div class="json-dialog-header"><h2>${escape(state.current.id)} · JSON</h2><button type="button" class="secondary-button" data-json-close>Close</button></div><p>This English display preserves the recorded senses and dependencies. Non-English source annotations are omitted or marked unavailable. Original data remain unchanged. Select the text below to copy the displayed JSON.</p><div class="json-dialog-actions"><button type="button" class="secondary-button" data-json-select>Select all</button><button type="button" class="secondary-button" data-json-copy>Copy JSON</button><span role="status" data-json-status></span></div><textarea class="json-text" readonly spellcheck="false" wrap="off" aria-label="Sense JSON (English view)"></textarea>`;
+    const area=dialog.querySelector('textarea');area.value=englishDisplayJSON(state.current);
+    const select=()=>{area.focus();area.select();dialog.querySelector('[data-json-status]').textContent='Text selected. Use Copy or Ctrl/Cmd+C.';};
     dialog.querySelector('[data-json-select]').addEventListener('click',select);
-    dialog.querySelector('[data-json-copy]').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(area.value);dialog.querySelector('[data-json-status]').textContent=en?'JSON copied.':'已复制 JSON。';}catch(_){select();}});
+    dialog.querySelector('[data-json-copy]').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(area.value);dialog.querySelector('[data-json-status]').textContent='JSON copied.';}catch(_){select();}});
     dialog.querySelector('[data-json-close]').addEventListener('click',()=>dialog.close());
     dialog.addEventListener('close',()=>{dialog.remove();if(active?.isConnected)active.focus();},{once:true});
     document.body.appendChild(dialog);dialog.showModal();
   }
   async function initialize() {
-    applyLanguage();
+    applyInterfaceText();
     try {
       state.manifest=await window.Basis91Data.load('manifest');
       state.searchEngine=window.Basis91Search.create();
@@ -251,10 +390,9 @@
   $('#query').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>search(),160);});
   $('#pos-filter').addEventListener('change',()=>search());$('#basis-filter').addEventListener('change',()=>search());
   $('#reset-filters').addEventListener('click',()=>{$('#query').value='';$('#pos-filter').value='';$('#basis-filter').value='';search();});
-  $('#language').addEventListener('click',()=>{lang=lang==='zh'?'en':'zh';applyLanguage();renderSearch();if(state.current)renderDetail();else if(state.ready)renderOverview();});
   $('#mobile-search').addEventListener('click',()=>{const open=$('#sidebar').classList.toggle('mobile-open');$('#mobile-search').setAttribute('aria-expanded',String(open));if(open)$('#query').focus();});
   document.addEventListener('input',event=>{if(event.target.id==='dependent-query'){state.dependentQuery=event.target.value;clearTimeout(dependentTimer);dependentTimer=setTimeout(()=>renderDependentPage(),160);}});
-  document.addEventListener('toggle',event=>{const target=event.target;if(target.matches('.document'))hydrateDocument(target);else if(target.matches('.evidence'))hydrateEvidence(target);else if(target.matches('[data-raw-record]')&&target.open&&!target.dataset.hydrated){target.querySelector('div').innerHTML=`<pre class="raw-json">${escape(JSON.stringify(state.current,null,2))}</pre>`;target.dataset.hydrated='true';}},true);
+  document.addEventListener('toggle',event=>{const target=event.target;if(target.matches('.document'))hydrateDocument(target);else if(target.matches('.evidence'))hydrateEvidence(target);else if(target.matches('[data-raw-record]')&&target.open&&!target.dataset.hydrated){target.querySelector('div').innerHTML=`<pre class="raw-json">${escape(englishDisplayJSON(state.current))}</pre>`;target.dataset.hydrated='true';}},true);
   document.addEventListener('click',async event=>{
     if(event.target.closest('.skip-link')){event.preventDefault();main.focus();main.scrollIntoView({block:'start'});return;}
     const button=event.target.closest('button');if(!button)return;
