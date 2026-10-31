@@ -132,21 +132,21 @@
   const t = key => messages[key] ?? key;
   const containsChinese = value => /[\u3400-\u9fff]/u.test(String(value ?? ''));
   function englishRationale(value) {
-    return containsChinese(value) ? 'The source rationale is not available in English.' : value;
+    return containsChinese(value) ? '' : value;
   }
   function englishDisplayJSON(value) {
     function project(item) {
       if (Array.isArray(item)) return item.map(project);
       if (!item || typeof item !== 'object') return item;
       return Object.fromEntries(Object.entries(item)
-        .filter(([key]) => key !== 'binding_notes_zh')
-        .map(([key, child]) => [key, key === 'rationale' && typeof child === 'string' ? englishRationale(child) : project(child)]));
+        .filter(([key, child]) => key !== 'binding_notes_zh' && !(key === 'rationale' && containsChinese(child)))
+        .map(([key, child]) => [key, project(child)]));
     }
     return JSON.stringify({
       ...project(value),
       _display: {
         language: 'en',
-        annotationPolicy: 'Non-English source annotations are omitted or marked unavailable. The original dataset is unchanged.'
+        annotationPolicy: 'Non-English source annotations are omitted. The original dataset is unchanged.'
       }
     }, null, 2);
   }
@@ -305,7 +305,7 @@
       const projected=ids.length>0&&token.requires_definition_wsd===true&&token.in_graph===true&&ids.every(id=>dependencies.has(id));
       const scopeWarning=projected&&outside?`<span class="scope-label">Source scope flag conflicts with the projected rule</span>`:'';
       const tokenChips=ids.map(id=>token.in_graph===false||!state.metadata.has(id)?`<span class="sense-chip mono" title="Not a node in the current graph">${escape(id)}</span>`:chip(id)).join('');
-      return `<tr><td class="wsd-token">${escape(token.text||token.token||token.lemma||'—')}<small>${escape(token.spacy_pos||token.pos||token.wsd_role||'')}</small></td><td>${ids.length?`<div class="chip-row">${tokenChips}</div>${!projected?`<span class="scope-label">${t('scopeLabel')}</span>`:''}${scopeWarning}`:`<span class="subtle-note">${t('notSelected')}</span>`}</td><td class="wsd-status ${projected?'projected':ids.length?'scope':''}">${projected?t('projected'):ids.length?t('scopeOnly'):escape(token.decision||token.projection_status||'—')}<small class="subtle-note">${token.projection_status?`<br>${escape(token.projection_status)}`:''}</small></td><td class="wsd-rationale">${token.rationale?`<details><summary>${t('rationale')}</summary><p>${escape(englishRationale(token.rationale))}</p></details>`:'—'}</td></tr>`;
+      return `<tr><td class="wsd-token">${escape(token.text||token.token||token.lemma||'—')}<small>${escape(token.spacy_pos||token.pos||token.wsd_role||'')}</small></td><td>${ids.length?`<div class="chip-row">${tokenChips}</div>${!projected?`<span class="scope-label">${t('scopeLabel')}</span>`:''}${scopeWarning}`:`<span class="subtle-note">${t('notSelected')}</span>`}</td><td class="wsd-status ${projected?'projected':ids.length?'scope':''}">${projected?t('projected'):ids.length?t('scopeOnly'):escape(token.decision||token.projection_status||'—')}<small class="subtle-note">${token.projection_status?`<br>${escape(token.projection_status)}`:''}</small></td><td class="wsd-rationale">${englishRationale(token.rationale)?`<details><summary>${t('rationale')}</summary><p>${escape(englishRationale(token.rationale))}</p></details>`:''}</td></tr>`;
     }).join('')}</tbody></table></div>`:''}<details class="full-json"><summary>${t('rawWsd')}</summary><pre class="raw-json">${escape(englishDisplayJSON(wsd))}</pre></details>`;
   }
   function renderClause(clause,index,head,current='') {
@@ -355,7 +355,7 @@
     if(!state.current)return;
     const active=document.activeElement,dialog=document.createElement('dialog');
     dialog.className='json-dialog';
-    dialog.innerHTML=`<div class="json-dialog-header"><h2>${escape(state.current.id)} · JSON</h2><button type="button" class="secondary-button" data-json-close>Close</button></div><p>This English display preserves the recorded senses and dependencies. Non-English source annotations are omitted or marked unavailable. Original data remain unchanged. Select the text below to copy the displayed JSON.</p><div class="json-dialog-actions"><button type="button" class="secondary-button" data-json-select>Select all</button><button type="button" class="secondary-button" data-json-copy>Copy JSON</button><span role="status" data-json-status></span></div><textarea class="json-text" readonly spellcheck="false" wrap="off" aria-label="Sense JSON (English view)"></textarea>`;
+    dialog.innerHTML=`<div class="json-dialog-header"><h2>${escape(state.current.id)} · JSON</h2><button type="button" class="secondary-button" data-json-close>Close</button></div><p>This English display preserves the recorded senses and dependencies. Non-English source annotations are omitted. Original data remain unchanged. Select the text below to copy the displayed JSON.</p><div class="json-dialog-actions"><button type="button" class="secondary-button" data-json-select>Select all</button><button type="button" class="secondary-button" data-json-copy>Copy JSON</button><span role="status" data-json-status></span></div><textarea class="json-text" readonly spellcheck="false" wrap="off" aria-label="Sense JSON (English view)"></textarea>`;
     const area=dialog.querySelector('textarea');area.value=englishDisplayJSON(state.current);
     const select=()=>{area.focus();area.select();dialog.querySelector('[data-json-status]').textContent='Text selected. Use Copy or Ctrl/Cmd+C.';};
     dialog.querySelector('[data-json-select]').addEventListener('click',select);

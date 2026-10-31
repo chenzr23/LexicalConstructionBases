@@ -20,7 +20,7 @@ All application resource URLs are relative, so the website can run beneath a pat
 
 The data files are loaded through classic script callbacks. Their payloads preserve the gzip-compressed dataset bytes. Search runs in asynchronous batches on the main thread. The application does not require persistent browser storage, a worker or cross-origin data requests. Each file is smaller than 8 MiB.
 
-The JSON button opens an English display projection in an on-page text viewer. Senses, definitions, selected sense IDs and dependency clauses are preserved. Non-English source rationales receive an English availability notice, and Chinese-only binding notes are omitted from this view; the underlying published data files remain unchanged. A user can select and copy the text if the host blocks automatic clipboard access. The application does not attempt to bypass restrictions on downloads. The interface is English-only and does not offer a language switch.
+The JSON button opens an English display projection in an on-page text viewer. Senses, definitions, selected sense IDs and dependency clauses are preserved. Non-English source rationales and Chinese-only binding notes are omitted from this view without placeholder messages; the underlying published data files remain unchanged. A user can select and copy the text if the host blocks automatic clipboard access. The application does not attempt to bypass restrictions on downloads. The interface is English-only and does not offer a language switch.
 
 ## Data and attribution
 
